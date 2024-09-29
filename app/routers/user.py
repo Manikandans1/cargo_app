@@ -14,12 +14,12 @@ get_db = database.get_db
 
 
 #CREATE THE NEW USER
-@router.post('/user/',response_model=schemas.Show_user)
+@router.post('/register/',response_model=schemas.Show_user)
 def create_user(request: schemas.User, db: Session = Depends(get_db)):
     return user.create(request,db)
 
 
 
-@router.get('/user/{id}',response_model=schemas.Show_user)
+@router.get('/register/{id}',response_model=schemas.Show_user)
 def get_user(id:int, db: Session = Depends(get_db)):
     return user.show(id,db)

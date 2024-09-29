@@ -30,7 +30,7 @@ class User(Base):
 
     id = Column(Integer,primary_key=True, index=True) 
     user_name = Column(String)
-    user_number = Column(String)
+    #user_number = Column(String)
     user_email = Column(String)
     user_password = Column(String)
 

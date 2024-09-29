@@ -25,7 +25,7 @@ class Create_Order(BaseModel):
 #CREATE THE NEW USER
 class User(BaseModel):
     user_name: str
-    user_number: str
+    #user_number: str
     user_email: str
     user_password: str
 
@@ -79,7 +79,7 @@ class PaymentResponse(BaseModel):
 
 class Show_user(BaseModel):
     user_name: str
-    user_number: str
+    #user_number: str
     user_email: str
     orders: List[Create_Order] = []
     class Config():
