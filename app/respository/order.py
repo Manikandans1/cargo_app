@@ -3,12 +3,12 @@ from .. import models, schemas
 from fastapi import HTTPException, status
 
 def get_all(db : Session):
-    view_all_order = db.query(models.Create_Order).all()
+    view_all_order = db.query(models.CreateOrder).all()
     return view_all_order
 
 def create_orders(orders: schemas.Create_Order,db: Session):
-    new_orders = models.Create_Order(
-        coustmer_name = orders.coustmer_name, 
+    new_orders = models.CreateOrder(
+        customer_name = orders.customer_name, 
         pickup_location = orders.pickup_location, 
         delivery_location = orders.delivery_location, 
         remarks = orders.remarks,
@@ -25,7 +25,7 @@ def create_orders(orders: schemas.Create_Order,db: Session):
     return new_orders
 
 def destroy(id:int,db: Session):
-    destroyy = db.query(models.Create_Order).filter(models.Create_Order.id == id)
+    destroyy = db.query(models.CreateOrder).filter(models.CreateOrder.id == id)
     if not destroyy.first():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -37,7 +37,7 @@ def destroy(id:int,db: Session):
 
 
 def update(id:int,orders: schemas.Create_Order, db:Session):
-    new_update = db.query(models.Create_Order).filter(models.Create_Order.id == id)
+    new_update = db.query(models.CreateOrder).filter(models.CreateOrder.id == id)
     if not new_update.first():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -47,7 +47,7 @@ def update(id:int,orders: schemas.Create_Order, db:Session):
     return 'updated sucessfully'
 
 def track_id(id:int,db:Session):
-    track_id = db.query(models.Create_Order).filter(models.Create_Order.id == id).first()
+    track_id = db.query(models.CreateOrder).filter(models.CreateOrder.id == id).first()
     if not track_id:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

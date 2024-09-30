@@ -2,10 +2,6 @@ from sqlalchemy.orm import Session
 from .. import models, schemas
 from fastapi import HTTPException, status
 
-
-
-
-
 def LiveUpdates(orders: schemas.LiveUpdate, db: Session):
     # Check if the tracking_id already exists in the database
     existing_tracking_id = db.query(models.LiveUpdate).filter(models.LiveUpdate.tracking_id == orders.tracking_id).first()
@@ -36,7 +32,7 @@ def LiveUpdates(orders: schemas.LiveUpdate, db: Session):
 
 
 def liveupdate_id(tracking_id:int,db:Session):
-    liveupdate_id = db.query(models.LiveUpdate).filter(models.LiveUpdate.tracking_id == tracking_id).first()
+    liveupdate_id = db.query(models.LiveUpdate).filter(models.LiveUpdate.tracking_id == str(tracking_id)).first()
     if not liveupdate_id:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -45,7 +41,7 @@ def liveupdate_id(tracking_id:int,db:Session):
 
 
 def LiveTrackUpdate(tracking_id:int,orders: schemas.LiveUpdate, db:Session):
-    live_update = db.query(models.LiveUpdate).filter(models.LiveUpdate.tracking_id == tracking_id).first()
+    live_update =  db.query(models.LiveUpdate).filter(models.LiveUpdate.tracking_id == str(tracking_id)).first()
     if not live_update:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

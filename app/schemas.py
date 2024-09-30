@@ -3,7 +3,7 @@ from typing import List, Optional
 
 #ORDER
 class Create_Order(BaseModel):
-    coustmer_name: str
+    customer_name: str
     pickup_date: str
     sender_country: str
     receiver_country: str
@@ -70,13 +70,6 @@ class PaymentResponse(BaseModel):
     bill_location: Optional[str] = None
 
 
-
-
-
-
-
-
-
 class Show_user(BaseModel):
     user_name: str
     #user_number: str
@@ -89,7 +82,7 @@ class Show_user(BaseModel):
 
 #----WHAT EVER WE WANT TO SHOW THE USER DEFINE THE NAME----
 class Show_Create_Order(BaseModel):
-    coustmer_name: str
+    customer_name: str
     pickup_location: str
     creator: Show_user
 
