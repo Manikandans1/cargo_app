@@ -5,7 +5,7 @@ from .. hashing import Hash
 
 #user_number = request.user_number,
 def create(request: schemas.User,db:Session):
-    new_user = models.User(user_name = request.user_name, user_email = request.user_email, user_password = Hash.bcrypt(request.user_password))
+    new_user = models.User(user_name = request.user_name, user_number = request.user_number, user_password = Hash.bcrypt(request.user_password))
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

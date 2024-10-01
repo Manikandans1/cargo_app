@@ -30,7 +30,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_name = Column(String(256), nullable=False)
-    user_email = Column(String(256), unique=True, nullable=False)
+    user_number = Column(String(256), unique=True, nullable=False)
     user_password = Column(String(256), nullable=False)
 
     # Relationship to the Order table

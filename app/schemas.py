@@ -26,7 +26,7 @@ class Create_Order(BaseModel):
 class User(BaseModel):
     user_name: str
     #user_number: str
-    user_email: str
+    user_number: str
     user_password: str
 
 
@@ -73,7 +73,7 @@ class PaymentResponse(BaseModel):
 class Show_user(BaseModel):
     user_name: str
     #user_number: str
-    user_email: str
+    user_number: str
     orders: List[Create_Order] = []
     class Config():
         orm_mode = True
@@ -104,4 +104,4 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    user_email: str | None = None
+    user_number: str | None = None
