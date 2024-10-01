@@ -29,6 +29,20 @@ class User(BaseModel):
     user_number: str
     user_password: str
 
+class ShowUser(BaseModel):
+    id: int
+    user_name: str
+    user_number: str
+    signup_month: str
+    signup_year: int
+    is_active: bool
+
+    class Config:
+        orm_mode = True
+
+class UserUpdate(BaseModel):
+    user_name: Optional[str]
+    user_number: Optional[str]
 
 # USER GET PAYMENT DEATILS---COMPANY WILL CREATE DEATILS
 class Payment(BaseModel):
@@ -38,8 +52,6 @@ class Payment(BaseModel):
 
 class PaymentResponse(BaseModel):
     detail: str
-
-
 
 
 # -------ORDER TRACKING LIVE UPDATE-------------

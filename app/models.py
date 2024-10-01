@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Float, Index, create_engine
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, Index, create_engine, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -32,6 +32,11 @@ class User(Base):
     user_name = Column(String(256), nullable=False)
     user_number = Column(String(256), unique=True, nullable=False)
     user_password = Column(String(256), nullable=False)
+    
+        # New fields for auto-detection
+    signup_month = Column(String, nullable=False)  # e.g., 'October'
+    signup_year = Column(Integer, nullable=False)   # e.g., 2024
+    is_active = Column(Boolean, default=True)
 
     # Relationship to the Order table
     orders = relationship("CreateOrder", back_populates="creator")
