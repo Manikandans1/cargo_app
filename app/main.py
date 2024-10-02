@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from . import models
 from .database import engine
-from .routers import order, user, authentication, payment, ordertrackingupdate, profile
+from .routers import order, user, authentication, payment, ordertrackingupdate, profile, notifications
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
@@ -15,6 +15,7 @@ app.include_router(user.router)
 app.include_router(profile.router)
 app.include_router(payment.router)
 app.include_router(ordertrackingupdate.router)
+app.include_router(notifications.router)
 
 # Serve static files
 app.mount("/payment_screenshots", StaticFiles(directory="payment_screenshots"), name="payment_screenshots")

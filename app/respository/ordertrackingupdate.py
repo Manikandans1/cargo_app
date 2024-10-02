@@ -3,10 +3,7 @@ from .. import models, schemas
 from fastapi import HTTPException, status
 
 def LiveUpdates(orders: schemas.LiveUpdate, db: Session):
-    # Check if the tracking_id already exists in the database
     existing_tracking_id = db.query(models.LiveUpdate).filter(models.LiveUpdate.tracking_id == orders.tracking_id).first()
-    
-    # If tracking_id exists, raise an HTTP 400 Bad Request error
     if existing_tracking_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

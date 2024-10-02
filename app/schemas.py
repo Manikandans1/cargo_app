@@ -1,10 +1,11 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
+from datetime import date
 
 #ORDER
 class Create_Order(BaseModel):
     customer_name: str
-    pickup_date: str
+    pickup_date: date
     sender_country: str
     receiver_country: str
     sender_number: str
@@ -12,14 +13,17 @@ class Create_Order(BaseModel):
     pickup_location: str
     delivery_location: str
     remarks: str | None = None
-
-
+    
     class Config():
         orm_mode = True
    # description: str | None = None
    # price: float
    # tax: float | None = None
 
+# Schema for OTP verification
+class OTPVerification(BaseModel):
+    order_id: int
+    otp: str
 
 
 #CREATE THE NEW USER
@@ -55,21 +59,22 @@ class PaymentResponse(BaseModel):
 
 
 # -------ORDER TRACKING LIVE UPDATE-------------
+
 class LiveUpdate(BaseModel):
-    tracking_id: str = Field(..., allow_mutation=False)
-    order_confirmed: str
-    package_pickup: str | None = None
-    move_to: str | None = None
-    clear_custom: str | None = None
-    ready_to_delivery: str | None = None
-    package_delivered: str | None = None
-    class Config():
-        # Make the model immutable
-        allow_mutation = True
+    tracking_id: str = Field(..., allow_mutation=False)  # Tracking ID cannot be updated once set
+    order_confirmed: Optional[bool] = Field(None, allow_mutation=False)
+    package_pickup: Optional[bool] = Field(None, allow_mutation=False)
+    move_to: Optional[str] = Field(None, allow_mutation=False)
+    clear_custom: Optional[bool] = Field(None, allow_mutation=False)
+    ready_to_delivery: Optional[bool] = Field(None, allow_mutation=False)
+    package_delivered: Optional[bool] = Field(None, allow_mutation=False)
+
+    class Config:
+        allow_mutation = False
 
     def __setattr__(self, name, value):
-        if name == "tracking_id" and hasattr(self, "tracking_id"):
-            raise ValueError("The tracking_id cannot be updated once it is set.")
+        if hasattr(self, name):
+            raise ValueError(f"The field '{name}' cannot be updated once it is set.")
         super().__setattr__(name, value)
 
 
