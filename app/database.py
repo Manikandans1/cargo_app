@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # Updated database URL for PostgreSQL
-DATABASE_URL = "postgresql://Embassy:Embassy1@localhost:5432/cargoapp"
+DATABASE_URL = "postgresql://Embassy:Embassy@12@localhost:5432/cargoapp"
 
 # Create the PostgreSQL engine
 engine = create_engine(DATABASE_URL)
