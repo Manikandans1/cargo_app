@@ -1,17 +1,17 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, constr
 from typing import List, Optional
 from datetime import date
 
 #ORDER
 class Create_Order(BaseModel):
     customer_name: str
-    pickup_date: date
+    pickup_date: str
     sender_country: str
     receiver_country: str
     sender_number: str
     cargo_type: str
     pickup_location: str
-    delivery_location: str
+    # delivery_location: str
     remarks: str | None = None
     
     class Config():
@@ -29,17 +29,16 @@ class OTPVerification(BaseModel):
 #CREATE THE NEW USER
 class User(BaseModel):
     user_name: str
-    #user_number: str
-    user_number: str
+    user_number: str  # Enforce non-empty user_number
     user_password: str
 
 class ShowUser(BaseModel):
-    id: int
+    # id: int
     user_name: str
     user_number: str
     signup_month: str
     signup_year: int
-    is_active: bool
+    # is_active: bool
 
     class Config:
         orm_mode = True
@@ -60,22 +59,38 @@ class PaymentResponse(BaseModel):
 
 # -------ORDER TRACKING LIVE UPDATE-------------
 
+
 class LiveUpdate(BaseModel):
-    tracking_id: str = Field(..., allow_mutation=False)  # Tracking ID cannot be updated once set
-    order_confirmed: Optional[bool] = Field(None, allow_mutation=False)
-    package_pickup: Optional[bool] = Field(None, allow_mutation=False)
-    move_to: Optional[str] = Field(None, allow_mutation=False)
-    clear_custom: Optional[bool] = Field(None, allow_mutation=False)
-    ready_to_delivery: Optional[bool] = Field(None, allow_mutation=False)
-    package_delivered: Optional[bool] = Field(None, allow_mutation=False)
+    tracking_id: str
+    order_confirmed: Optional[bool] = True
+    package_pickup: Optional[bool] = False
+    move_to: Optional[str] = "No"
+    clear_custom: Optional[bool] = False
+    ready_to_delivery: Optional[bool] = False
+    package_delivered: Optional[bool] = False
 
     class Config:
-        allow_mutation = False
+        orm_mode = True 
 
-    def __setattr__(self, name, value):
-        if hasattr(self, name):
-            raise ValueError(f"The field '{name}' cannot be updated once it is set.")
-        super().__setattr__(name, value)
+
+class Sender(BaseModel):
+    name: str
+    country: str
+    shipping_type: str
+    weight_cbm: str
+    quantity: str
+    order_date: str
+    expected_delivery_day: str
+    pickup_driver: str
+    delivery_driver: str
+    service_charge: str
+
+class Receiver(BaseModel):
+    name: str
+    country: str
+    district: str
+    city: str
+
 
 
 class PaymentUpdate(BaseModel):
@@ -91,7 +106,7 @@ class Show_user(BaseModel):
     user_name: str
     #user_number: str
     user_number: str
-    orders: List[Create_Order] = []
+    # orders: List[Create_Order] = []
     class Config():
         orm_mode = True
 
@@ -101,7 +116,7 @@ class Show_user(BaseModel):
 class Show_Create_Order(BaseModel):
     customer_name: str
     pickup_location: str
-    creator: Show_user
+    # creator: Show_user
 
 
     class Config():

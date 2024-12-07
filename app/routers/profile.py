@@ -10,17 +10,18 @@ router = APIRouter(
 )
 get_db = database.get_db
 
-
-@router.get('/profile/{user_id}', response_model=schemas.ShowUser)
-def get_user_profile(user_id: int, db: Session = Depends(get_db)):
-    user_data = profile.get_user(user_id=user_id, db=db)  # Use the instance to call get_user
+# Route to get the user profile based on user_number
+@router.get('/profile/{user_number}', response_model=schemas.ShowUser)
+def get_user_profile(user_number: str, db: Session = Depends(get_db)):
+    user_data = profile.get_user(user_number=user_number, db=db)
     if user_data is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return user_data  # Return the retrieved user data
+    return user_data
 
-@router.put('/profile/{user_id}', response_model=schemas.ShowUser)
-def update_user_profile(user_id: int, request: schemas.UserUpdate, db: Session = Depends(get_db)):
-    updated_user = profile.update_user(user_id, request, db)
+# Route to update the user profile based on user_number
+@router.put('/profile/{user_number}', response_model=schemas.ShowUser)
+def update_user_profile(user_number: str, request: schemas.UserUpdate, db: Session = Depends(get_db)):
+    updated_user = profile.update_user(user_number=user_number, request=request, db=db)
     if updated_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return updated_user

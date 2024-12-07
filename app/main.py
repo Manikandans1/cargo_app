@@ -3,8 +3,20 @@ from . import models
 from .database import engine
 from .routers import order, user, authentication, payment, ordertrackingupdate, profile, notifications
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # You can set this to a specific domain in production (e.g., ["https://example.com"])
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers (you can specify specific headers if needed)
+)
+
+
+
 
 # Create the database tables
 models.Base.metadata.create_all(bind=engine)

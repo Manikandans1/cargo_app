@@ -5,11 +5,11 @@ from .. hashing import Hash
 from datetime import datetime
 
 
-def get_user(user_id: int, db: Session):
-        return db.query(models.User).filter(models.User.id == user_id).first()
+def get_user(user_number: int, db: Session):
+        return db.query(models.User).filter(models.User.user_number == user_number).first()
 
-def update_user(user_id: int, request: schemas.UserUpdate, db: Session):
-        user = db.query(models.User).filter(models.User.id == user_id).first()
+def update_user(user_number: int, request: schemas.UserUpdate, db: Session):
+        user = db.query(models.User).filter(models.User.user_number == user_number).first()
         if user:
             user.user_name = request.user_name
             user.user_number = request.user_number

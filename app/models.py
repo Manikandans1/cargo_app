@@ -12,65 +12,93 @@ class CreateOrder(Base):
     id = Column(Integer, primary_key=True, index=True)
     customer_name = Column(String(256), nullable=False)
     pickup_date = Column(String(256), nullable=False)
-    sender_country = Column(Date, nullable=False)
+    sender_country = Column(String(256), nullable=False)
     receiver_country = Column(String(256), nullable=False)
     sender_number = Column(String(20), nullable=False)  # Adjust size as necessary
     cargo_type = Column(String(256), nullable=False)
     pickup_location = Column(String(256), nullable=False)
-    delivery_location = Column(String(256), nullable=False)
+    # delivery_location = Column(String(256), nullable=False)
     remarks = Column(String(512), default="", nullable=True)  # Default to empty string
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    # user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     # Relationship to the User table
-    creator = relationship("User", back_populates="orders")
+    # creator = relationship("User", back_populates="orders")
 
-# USER TABLE
 class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, index=True)
     user_name = Column(String(256), nullable=False)
-    user_number = Column(String(256), unique=True, nullable=False)
+    user_number = Column(String(256), unique=True, nullable=False)  # Ensure this is unique
     user_password = Column(String(256), nullable=False)
     
-        # New fields for auto-detection
+    # New fields for auto-detection
     signup_month = Column(String, nullable=False)  # e.g., 'October'
     signup_year = Column(Integer, nullable=False)   # e.g., 2024
     is_active = Column(Boolean, default=True)
 
     # Relationship to the Order table
-    orders = relationship("CreateOrder", back_populates="creator")
-
-# PAYMENT TABLE
-class Payment(Base):
-    __tablename__ = 'payment'
-
-    id = Column(Integer, primary_key=True, index=True)
-    amount = Column(Float, nullable=False)
-    payment_status = Column(String(50), nullable=False, default="pending")  # Using String for payment status
-    tracking_id = Column(String(256), ForeignKey('live_tracking_update.tracking_id'), unique=True, nullable=False)
-
-    # Relationship with LiveUpdate
-    live_update = relationship("LiveUpdate", back_populates="payment")
+    # orders = relationship("CreateOrder", back_populates="creator")
 
 # ORDER TRACKING LIVE UPDATE
 class LiveUpdate(Base):
     __tablename__ = 'live_tracking_update'
 
     id = Column(Integer, primary_key=True, index=True)
-    tracking_id = Column(String(256), unique=True, nullable=False)
+    tracking_id = Column(String(256), unique=True, nullable=True)
     order_confirmed = Column(String(256), nullable=True)
-    package_pickup = Column(String(256), nullable=True)
+    package_pickup = Column(String(256), nullable=False)
     move_to = Column(String(256), nullable=True)
-    clear_custom = Column(String(256), nullable=True)
-    ready_to_delivery = Column(String(256), nullable=True)
-    package_delivered = Column(String(256), nullable=True)
+    clear_custom = Column(String(256), nullable=False)
+    ready_to_delivery = Column(String(256), nullable=False)
+    package_delivered = Column(String(256), nullable=False)
+    # Relationships
+    sender = relationship("Sender", back_populates="live_update", uselist=False)
+    receiver = relationship("Receiver", back_populates="live_update", uselist=False)
 
     # One-to-one relationship with Payment
-    payment = relationship("Payment", back_populates="live_update")
+    # payment = relationship("Payment", back_populates="live_update")
 
     # One-to-one relationship with PaymentDetails
     payment_details = relationship("PaymentDetails", back_populates="live_update")
+
+
+
+class Sender(Base):
+    __tablename__ = 'sender'
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    country = Column(String)
+    shipping_type = Column(String)
+    weight_cbm = Column(String)
+    quantity = Column(String)
+    order_date = Column(String)
+    expected_delivery_day = Column(String)
+    pickup_driver = Column(String)
+    delivery_driver = Column(String)
+    service_charge = Column(String)
+    live_update_id = Column(Integer, ForeignKey('live_tracking_update.id'))
+
+    # Back reference to LiveUpdate
+    live_update = relationship("LiveUpdate", back_populates="sender")
+
+class Receiver(Base):
+    __tablename__ = 'receiver'
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    country = Column(String)
+    district = Column(String)
+    city = Column(String)
+    live_update_id = Column(Integer, ForeignKey('live_tracking_update.id'))
+
+    # Back reference to LiveUpdate
+    live_update = relationship("LiveUpdate", back_populates="receiver")
+
+
+
+
 
 # PAYMENT DETAILS TABLE
 class PaymentDetails(Base):

@@ -19,7 +19,7 @@ def view_all_orders(db: Session = Depends(get_db),current_user: schemas.User = D
 
 #NEW ORDER CREATE
 @router.post('/orders/', status_code=status.HTTP_201_CREATED)
-def create_orders(orders: schemas.Create_Order, db: Session = Depends(get_db),current_user: schemas.User = Depends(oauth2.get_current_user)):
+def create_orders(orders: schemas.Create_Order, db: Session = Depends(get_db)):
     return order.create_orders(orders, db)
  
 # Route to verify the OTP
